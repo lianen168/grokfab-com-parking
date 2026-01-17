@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grokfab | Truth Factory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2a6b5c;
+            --secondary: #d4a017;
+            --accent: #8b4513;
+            --light: #f5f1e6;
+            --dark: #1a1a1a;
+            --truth: #2e8b57;
+            --factory: #8b7355;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f5f0;
+            color: #333;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(42, 107, 92, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(212, 160, 23, 0.05) 0%, transparent 50%),
+                linear-gradient(to bottom, #f8f5f0, #f0ebe0);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Parchment texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.05"><path d="M0,0 L100,0 L100,100 L0,100 Z" fill="none" stroke="%232a6b5c" stroke-width="0.5"/><path d="M20,0 L20,100" stroke="%232a6b5c" stroke-width="0.3"/><path d="M40,0 L40,100" stroke="%232a6b5c" stroke-width="0.3"/><path d="M60,0 L60,100" stroke="%232a6b5c" stroke-width="0.3"/><path d="M80,0 L80,100" stroke="%232a6b5c" stroke-width="0.3"/></svg>');
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 0;
+            border-bottom: 2px solid var(--primary);
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 2.8rem;
+            color: var(--secondary);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 3rem;
+            color: var(--primary);
+            letter-spacing: -1px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        .logo-subtitle {
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.9rem;
+            color: var(--accent);
+            letter-spacing: 3px;
+            margin-top: 8px;
+            text-transform: uppercase;
+        }
+        
+        .price-tag {
+            background: white;
+            border: 3px double var(--accent);
+            border-radius: 8px;
+            padding: 20px 30px;
+            text-align: center;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        
+        .price-tag:hover {
+            transform: translateY(-5px);
+            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .price-tag::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 3px double var(--accent);
+            border-radius: 50%;
+        }
+        
+        .price-tag::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 8px;
+            background: white;
+        }
+        
+        .price-amount {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: var(--primary);
+            font-weight: 800;
+        }
+        
+        .price-installment {
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-top: 8px;
+            font-weight: 600;
+        }
+        
+        .main-content {
+            padding: 60px 0 40px;
+        }
+        
+        .hero-section {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+        
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.2rem;
+            font-weight: 900;
+            margin-bottom: 25px;
+            line-height: 1.1;
+            color: var(--dark);
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .title-underline {
+            display: inline-block;
+            position: relative;
+        }
+        
+        .title-underline::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            border-radius: 3px;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: #555;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+        
+        .domain-display {
+            margin: 60px 0;
+            position: relative;
+        }
+        
+        .domain-name {
+            font-family: 'Source Code Pro', monospace;
+            font-size: 4.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-align: center;
+            letter-spacing: 2px;
+            position: relative;
+            padding: 20px;
+            background: white;
+            border: 3px double var(--accent);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .domain-breakdown {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            margin-top: 50px;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .breakdown-card {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 10px;
+            padding: 35px 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border-top: 6px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        
+        .breakdown-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+        
+        .breakdown-card.truth {
+            border-top-color: var(--truth);
+        }
+        
+        .breakdown-card.factory {
+            border-top-color: var(--factory);
+        }
+        
+        .card-icon {
+            font-size: 3.5rem;
+            color: var(--secondary);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .card-desc {
+            color: #555;
+            line-height: 1.7;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+        
+        .domain-stats {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            min-width: 180px;
+        }
+        
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.9rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+        
+        .contact-section {
+            margin: 70px 0;
+            padding: 50px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: 2px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+        }
+        
+        .contact-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 25px;
+        }
+        
+        .contact-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .email-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8rem;
+            color: var(--primary);
+            text-decoration: none;
+            padding: 20px 40px;
+            border-radius: 8px;
+            background: white;
+            border: 2px solid var(--primary);
+            transition: all 0.4s ease;
+            font-family: 'Source Code Pro', monospace;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .email-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(42, 107, 92, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .email-link:hover::before {
+            left: 100%;
+        }
+        
+        .email-link:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(42, 107, 92, 0.3);
+        }
+        
+        .applications {
+            margin-top: 80px;
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: var(--primary);
+            margin-bottom: 50px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+        
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 35px;
+            margin-top: 40px;
+        }
+        
+        .app-card {
+            background: white;
+            border-radius: 10px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border-left: 6px solid var(--secondary);
+            transition: all 0.4s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .app-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+            border-left-color: var(--primary);
+        }
+        
+        .app-icon {
+            font-size: 2.8rem;
+            color: var(--secondary);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .app-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .app-desc {
+            color: #555;
+            line-height: 1.7;
+            flex-grow: 1;
+        }
+        
+        .app-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 25px;
+        }
+        
+        .app-tag {
+            background: rgba(42, 107, 92, 0.1);
+            color: var(--primary);
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-family: 'Source Code Pro', monospace;
+            font-weight: 500;
+        }
+        
+        .exploration-elements {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+        
+        .exploration-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            animation: bounce 3s infinite ease-in-out;
+        }
+        
+        .exploration-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: 700;
+            text-align: center;
+            max-width: 600px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 60px 0 40px;
+            margin-top: 80px;
+            border-top: 2px solid var(--primary);
+            color: #666;
+            font-size: 0.95rem;
+            position: relative;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        .factory-illustration {
+            width: 100%;
+            max-width: 800px;
+            height: 150px;
+            margin: 60px auto;
+            position: relative;
+            background: linear-gradient(to right, rgba(42, 107, 92, 0.1), rgba(212, 160, 23, 0.1));
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .factory-icon {
+            font-size: 5rem;
+            color: var(--factory);
+            opacity: 0.7;
+        }
+        
+        .smoke {
+            position: absolute;
+            width: 40px;
+            height: 80px;
+            background: linear-gradient(to top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 100%);
+            border-radius: 50%;
+            bottom: 0;
+            animation: smoke 4s infinite ease-in-out;
+        }
+        
+        .smoke:nth-child(1) { left: 30%; animation-delay: 0s; }
+        .smoke:nth-child(2) { left: 50%; animation-delay: 0.5s; }
+        .smoke:nth-child(3) { left: 70%; animation-delay: 1s; }
+        
+        /* Animations */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        @keyframes smoke {
+            0% { 
+                transform: translateY(0) scale(1); 
+                opacity: 0.8;
+            }
+            100% { 
+                transform: translateY(-100px) scale(2); 
+                opacity: 0;
+            }
+        }
+        
+        @media (max-width: 1100px) {
+            .title {
+                font-size: 3.5rem;
+            }
+            
+            .domain-name {
+                font-size: 3.8rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .title {
+                font-size: 2.8rem;
+            }
+            
+            .domain-name {
+                font-size: 2.8rem;
+                padding: 15px;
+            }
+            
+            .logo-text {
+                font-size: 2.5rem;
+            }
+            
+            .breakdown-card {
+                min-width: 100%;
+            }
+            
+            .app-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .email-link {
+                font-size: 1.4rem;
+                padding: 15px 25px;
+            }
+            
+            .contact-section {
+                padding: 30px 20px;
+            }
+            
+            .exploration-text {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2.2rem;
+            }
+            
+            .domain-name {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .price-amount {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .domain-stats {
+                gap: 20px;
+            }
+            
+            .stat-item {
+                min-width: 140px;
+                padding: 20px;
+            }
+            
+            .stat-value {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-industry"></i>
+                </div>
+                <div>
+                    <div class="logo-text">GROKFAB</div>
+                    <div class="logo-subtitle">Truth Factory</div>
+                </div>
+            </div>
+            
+            <div class="price-tag">
+                <div class="price-amount">$4,200 USD</div>
+                <div class="price-installment">6 Installment Plan Available</div>
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <div class="hero-section">
+                <h1 class="title">
+                    <span class="title-underline">The Factory of Deep Understanding</span>
+                </h1>
+                
+                <p class="subtitle">
+                    Where profound insight meets systematic production. 
+                    A domain dedicated to the manufacturing of truth, the exploration of deep understanding, 
+                    and the systematic unveiling of hidden knowledge.
+                </p>
+                
+                <div class="exploration-elements">
+                    <div class="exploration-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="exploration-text">
+                        Explore · Discover · Understand · Produce
+                    </div>
+                    <div class="exploration-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                </div>
+                
+                <div class="factory-illustration">
+                    <div class="factory-icon">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <div class="smoke"></div>
+                    <div class="smoke"></div>
+                    <div class="smoke"></div>
+                </div>
+            </div>
+            
+            <div class="domain-display">
+                <div class="domain-name">GROKFAB.COM</div>
+                
+                <div class="domain-breakdown">
+                    <div class="breakdown-card truth">
+                        <div class="card-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="card-title">GROK</h3>
+                        <p class="card-desc">
+                            From Robert A. Heinlein's <em>Stranger in a Strange Land</em>, meaning to understand something so deeply that it becomes part of you. 
+                            Represents profound comprehension, intuitive understanding, and complete assimilation of knowledge.
+                        </p>
+                    </div>
+                    
+                    <div class="breakdown-card factory">
+                        <div class="card-icon">
+                            <i class="fas fa-industry"></i>
+                        </div>
+                        <h3 class="card-title">FAB</h3>
+                        <p class="card-desc">
+                            Short for Factory or Fabrication. Represents systematic production, manufacturing, 
+                            and the creation of something valuable through organized processes. 
+                            The industrial approach to generating truth and understanding.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="domain-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">7</div>
+                        <div class="stat-label">Characters</div>
+                    </div>
+                    
+                    <div class="stat-item">
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">Powerful Words</div>
+                    </div>
+                    
+                    <div class="stat-item">
+                        <div class="stat-value">100%</div>
+                        <div class="stat-label">Memorable</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-section">
+                <h2 class="contact-title">Domain Acquisition Inquiry</h2>
+                <p class="contact-subtitle">
+                    For visionary projects dedicated to truth discovery, deep learning, 
+                    and systematic knowledge production. Serious inquiries only.
+                </p>
+                <a href="mailto:joshua369x@gmail.com" class="email-link">
+                    <i class="fas fa-envelope"></i>
+                    joshua369x@gmail.com
+                </a>
+            </div>
+            
+            <div class="applications">
+                <h2 class="section-title">Ideal Applications for Grokfab.com</h2>
+                
+                <div class="app-grid">
+                    <div class="app-card">
+                        <div class="app-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="app-title">Deep Learning Platforms</h3>
+                        <p class="app-desc">
+                            Educational systems that don't just teach but ensure students truly "grok" concepts through immersive, 
+                            systematic learning factories that produce genuine understanding.
+                        </p>
+                        <div class="app-tags">
+                            <span class="app-tag">Education</span>
+                            <span class="app-tag">Learning Systems</span>
+                            <span class="app-tag">Comprehension</span>
+                        </div>
+                    </div>
+                    
+                    <div class="app-card">
+                        <div class="app-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h3 class="app-title">Data Insight Factories</h3>
+                        <p class="app-desc">
+                            Systems that transform raw data into profound insights through systematic analysis processes, 
+                            creating a factory-like approach to generating actionable understanding from information.
+                        </p>
+                        <div class="app-tags">
+                            <span class="app-tag">Data Analytics</span>
+                            <span class="app-tag">Business Intelligence</span>
+                            <span class="app-tag">Insight Generation</span>
+                        </div>
+                    </div>
+                    
+                    <div class="app-card">
+                        <div class="app-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <h3 class="app-title">Truth Verification Systems</h3>
+                        <p class="app-desc">
+                            Fact-checking and truth verification platforms that systematically process information 
+                            to produce verified facts and deep understanding of complex issues.
+                        </p>
+                        <div class="app-tags">
+                            <span class="app-tag">Fact Checking</span>
+                            <span class="app-tag">Verification</span>
+                            <span class="app-tag">Truth Systems</span>
+                        </div>
+                    </div>
+                    
+                    <div class="app-card">
+                        <div class="app-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3 class="app-title">Idea Generation Factories</h3>
+                        <p class="app-desc">
+                            Systematic creativity platforms that help teams deeply understand problems and systematically 
+                            produce innovative solutions through structured ideation processes.
+                        </p>
+                        <div class="app-tags">
+                            <span class="app-tag">Innovation</span>
+                            <span class="app-tag">Creativity</span>
+                            <span class="app-tag">Problem Solving</span>
+                        </div>
+                    </div>
+                    
+                    <div class="app-card">
+                        <div class="app-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3 class="app-title">Code Comprehension Tools</h3>
+                        <p class="app-desc">
+                            Developer tools that help programmers truly understand complex codebases through systematic 
+                            analysis and visualization, creating a "factory" for code comprehension.
+                        </p>
+                        <div class="app-tags">
+                            <span class="app-tag">Development</span>
+                            <span class="app-tag">Code Analysis</span>
+                            <span class="app-tag">Comprehension Tools</span>
+                        </div>
+                    </div>
+                    
+                    <div class="app-card">
+                        <div class="app-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3 class="app-title">Knowledge Synthesis Platforms</h3>
+                        <p class="app-desc">
+                            Systems that take fragmented information from multiple sources and systematically synthesize 
+                            it into deep, comprehensive understanding of complex topics.
+                        </p>
+                        <div class="app-tags">
+                            <span class="app-tag">Research</span>
+                            <span class="app-tag">Synthesis</span>
+                            <span class="app-tag">Knowledge Management</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 GROKFAB.COM — The Factory of Deep Understanding</p>
+            <p>Premium Domain for Truth Discovery and Knowledge Production Systems</p>
+            <p style="margin-top: 25px; font-size: 0.85rem; opacity: 0.7;">
+                GROK (to understand profoundly) + FAB (factory/fabrication) = Systematic Truth Production
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Add interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add typewriter effect to domain name
+            const domainName = document.querySelector('.domain-name');
+            const originalText = domainName.textContent;
+            domainName.textContent = '';
+            
+            let i = 0;
+            const typeWriter = () => {
+                if (i < originalText.length) {
+                    domainName.textContent += originalText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                }
+            };
+            
+            // Start typing after a short delay
+            setTimeout(typeWriter, 500);
+            
+            // Add hover effect to breakdown cards
+            const breakdownCards = document.querySelectorAll('.breakdown-card');
+            breakdownCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    const icon = this.querySelector('.card-icon i');
+                    icon.style.transform = 'scale(1.2) rotate(5deg)';
+                    icon.style.transition = 'transform 0.3s ease';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    const icon = this.querySelector('.card-icon i');
+                    icon.style.transform = 'scale(1) rotate(0deg)';
+                });
+            });
+            
+            // Add email link interaction
+            const emailLink = document.querySelector('.email-link');
+            emailLink.addEventListener('mouseenter', function() {
+                const icon = this.querySelector('i');
+                icon.style.transform = 'translateX(5px)';
+                icon.style.transition = 'transform 0.3s ease';
+            });
+            
+            emailLink.addEventListener('mouseleave', function() {
+                const icon = this.querySelector('i');
+                icon.style.transform = 'translateX(0)';
+            });
+            
+            // Add scroll animation for app cards
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe app cards
+            const appCards = document.querySelectorAll('.app-card');
+            appCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                card.style.transitionDelay = `${index * 0.1}s`;
+                observer.observe(card);
+            });
+            
+            // Create animated "truth particles"
+            const createTruthParticle = () => {
+                const particle = document.createElement('div');
+                particle.style.position = 'fixed';
+                particle.style.width = Math.random() * 10 + 5 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.backgroundColor = `rgba(${Math.random() > 0.5 ? '42, 107, 92' : '212, 160, 23'}, ${Math.random() * 0.3})`;
+                particle.style.borderRadius = '50%';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = '100vh';
+                particle.style.zIndex = '1';
+                particle.style.pointerEvents = 'none';
+                document.body.appendChild(particle);
+                
+                // Animate particle
+                const duration = Math.random() * 20 + 10;
+                const animation = particle.animate([
+                    { transform: 'translateY(0) rotate(0deg)', opacity: 0 },
+                    { transform: `translateY(-${Math.random() * 80 + 60}vh) rotate(${Math.random() * 180}deg)`, opacity: 0.5 },
+                    { transform: `translateY(-100vh) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                ], {
+                    duration: duration * 1000,
+                    easing: 'cubic-bezier(0.2, 0, 0.8, 1)'
+                });
+                
+                animation.onfinish = () => {
+                    document.body.removeChild(particle);
+                };
+            };
+            
+            // Create initial particles
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    createTruthParticle();
+                }, i * 1000);
+            }
+            
+            // Continue creating particles
+            setInterval(createTruthParticle, 3000);
+        });
+    </script>
+</body>
+</html>
